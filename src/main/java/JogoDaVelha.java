@@ -1,4 +1,5 @@
 import java.util.Random;
+import java.util.Scanner;
 
 class JogoDaVelha
 {
@@ -15,46 +16,69 @@ class JogoDaVelha
 
     public static void main(String args[])
     {
-        Jogador jogador1, jogador2;
+        Scanner sc = new Scanner(System.in);
 
-        jogador1 = new Jogador('X');
-        jogador2 = new Jogador('O');
+        System.out.print("Escolha seu símbolo (X ou O): ");
+
+        char simboloHumano = sc.next().toUpperCase().charAt(0);
+
+        char simboloMaquina = (simboloHumano == 'X') ? 'O' : 'X';
+
+        Jogador jogador1 = new Jogador(simboloHumano);
+        Jogador jogador2 = new Jogador(simboloMaquina);
 
         Tabuleiro tabuleiro = new Tabuleiro();
 
         JogoDaVelha jogoDaVelha;
 
-        jogoDaVelha = new JogoDaVelha(jogador1,jogador2,tabuleiro);
+        jogoDaVelha = new JogoDaVelha(jogador1, jogador2, tabuleiro);
+
         jogoDaVelha.iniciar();
+
+        sc.close();
     }
 
     private void iniciar()
     {
         Random random = new Random();
 
-        int linha,coluna;
+        int linha, coluna;
+
+        int partida = 1;
 
         while(!tabuleiro.acabouOJogo())
         {
-            tabuleiro.imprimir();
+            System.out.println("Partida " + partida);
 
-            linha = random.nextInt(3);
-            coluna = random.nextInt(3);
+            do {
+                linha = random.nextInt(3);
+                coluna = random.nextInt(3);
+            } while (!tabuleiro.jogar(jogador1.getSimbolo(), linha, coluna));
 
-            if(tabuleiro.estaLivre(linha,coluna))
-            {
-                tabuleiro.jogar(linha,coluna,jogador1);
+            System.out.println("Jogador 1 jogou:");
+
+            if (tabuleiro.acabouOJogo()) {
+                break;
             }
 
-            linha = random.nextInt(3);
-            coluna = random.nextInt(3);
+            do {
+                linha = random.nextInt(3);
+                coluna = random.nextInt(3);
+            } while(!tabuleiro.jogar(jogador2.getSimbolo(), linha, coluna));
 
-            if(tabuleiro.estaLivre(linha,coluna))
-            {
-                tabuleiro.jogar(linha,coluna,jogador2);
-            }
+            System.out.println("Jogador 2 jogou:");
+
+            partida++;
         }
 
-        tabuleiro.imprimir();
+        if (tabuleiro.haUmVencedor()) {
+            if (partida % 2 == 1) {
+                System.out.println("O jogador 1 ganhou");
+            } else {
+                System.out.println("O jogador 2 ganhou");
+            }
+        } else {
+            System.out.println("O jogo terminou empatado.");
+        }
     }
 }
