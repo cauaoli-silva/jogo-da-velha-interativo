@@ -1,4 +1,3 @@
-import java.util.Random;
 import java.util.Scanner;
 
 class JogoDaVelha
@@ -24,8 +23,9 @@ class JogoDaVelha
 
         char simboloMaquina = (simboloHumano == 'X') ? 'O' : 'X';
 
-        Jogador jogador1 = new Jogador(simboloHumano);
-        Jogador jogador2 = new Jogador(simboloMaquina);
+        Jogador jogador1 = new JogadorHumano(simboloHumano);
+
+        Jogador jogador2 = new JogadorMaquina(simboloMaquina);
 
         Tabuleiro tabuleiro = new Tabuleiro();
 
@@ -40,33 +40,19 @@ class JogoDaVelha
 
     private void iniciar()
     {
-        Random random = new Random();
-
-        int linha, coluna;
-
         int partida = 1;
 
         while(!tabuleiro.acabouOJogo())
         {
             System.out.println("Partida " + partida);
 
-            do {
-                linha = random.nextInt(3);
-                coluna = random.nextInt(3);
-            } while (!tabuleiro.jogar(jogador1.getSimbolo(), linha, coluna));
-
-            System.out.println("Jogador 1 jogou:");
+            jogador1.jogar(tabuleiro);
 
             if (tabuleiro.acabouOJogo()) {
                 break;
             }
 
-            do {
-                linha = random.nextInt(3);
-                coluna = random.nextInt(3);
-            } while(!tabuleiro.jogar(jogador2.getSimbolo(), linha, coluna));
-
-            System.out.println("Jogador 2 jogou:");
+            jogador2.jogar(tabuleiro);
 
             partida++;
         }

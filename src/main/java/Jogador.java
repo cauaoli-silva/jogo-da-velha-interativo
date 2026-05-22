@@ -1,5 +1,6 @@
-public class Jogador {
-    private char simbolo;
+public abstract class Jogador {
+
+    protected char simbolo;
 
     public Jogador(char simbolo)
     {
@@ -8,6 +9,8 @@ public class Jogador {
 
     public char getSimbolo()
     {
-        return this.simbolo;
-    }    
+        return simbolo;
+    }
+
+    public abstract void jogar(Tabuleiro tabuleiro);
 }
